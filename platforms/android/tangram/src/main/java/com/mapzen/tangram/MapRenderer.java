@@ -3,6 +3,7 @@ package com.mapzen.tangram;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -31,7 +32,7 @@ class MapRenderer implements GLSurfaceView.Renderer {
         //final int TILES_LOADING =    1 << final int SCENE_PENDING =    1 << 4;
         final int VIEW_ANIMATING =   1 << 5;
 
-        final long newTime = System.nanoTime();
+        final long newTime = System.nanoTime();  //  System.nanoTime 提供纳秒级别的精度
         final float delta = (newTime - time) / 1000000000.0f;
         time = newTime;
 
@@ -41,7 +42,7 @@ class MapRenderer implements GLSurfaceView.Renderer {
             // when MapController has been disposed but the View hasn't been destroyed yet.
             return;
         }
-
+        Log.d("showmap","onDrawFrame delta = " + delta);
         int state = map.nativeMap.render(delta);
 
         boolean mapViewComplete = (state == VIEW_COMPLETE);

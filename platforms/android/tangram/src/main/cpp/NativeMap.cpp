@@ -4,6 +4,7 @@
 #include "JniThreadBinding.h"
 #include <android/bitmap.h>
 #include <tangram.h>
+#include "log.h"
 
 namespace Tangram {
 
@@ -34,6 +35,7 @@ extern "C" {
 #define NATIVE_METHOD(NAME) JNIEXPORT JNICALL Java_com_mapzen_tangram_NativeMap_ ## NAME
 
 jlong NATIVE_METHOD(init)(JNIEnv* env, jobject obj, jobject mapController, jobject assetManager) {
+    LOGD("skyway initMap");
     auto map = new AndroidMap(env, mapController, assetManager);
     return reinterpret_cast<jlong>(map);
 }

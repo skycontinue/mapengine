@@ -70,14 +70,14 @@ public:
     RenderState renderState;
     JobQueue jobQueue;
     View view;
-
+    
     std::unique_ptr<AsyncWorker> asyncWorker = std::make_unique<AsyncWorker>();
     InputHandler inputHandler;
 
     std::unique_ptr<Ease> ease;
 
     std::unique_ptr<Scene> scene;
-
+    
     std::unique_ptr<FrameBuffer> selectionBuffer = std::make_unique<FrameBuffer>(0, 0);
 
     bool cacheGlState = false;
@@ -128,6 +128,8 @@ Map::~Map() {
 
 
 SceneID Map::loadScene(SceneOptions&& _sceneOptions, bool _async) {
+
+    LOGD("skyway sence url = %s",_sceneOptions.url.path().c_str());
     if (_async) {
         return impl->loadSceneAsync(std::move(_sceneOptions));
     } else {
@@ -219,7 +221,7 @@ MapState Map::update(float _dt) {
     FrameInfo::beginUpdate();
 
     impl->jobQueue.runJobs();
-
+    
     bool isEasing = impl->updateCameraEase(_dt);
     bool isFlinging = impl->inputHandler.update(_dt);
 
@@ -228,7 +230,7 @@ MapState Map::update(float _dt) {
         state |= MapState::view_changing;
         state |= MapState::is_animating;
     }
-
+    
     auto& scene = *impl->scene;
     bool wasReady = scene.isReady();
 
@@ -259,7 +261,7 @@ MapState Map::update(float _dt) {
 }
 
 void Map::render() {
-
+    LOGD("skyway map render");
     auto& scene = *impl->scene;
     auto& view = impl->view;
     auto& renderState = impl->renderState;
@@ -268,7 +270,7 @@ void Map::render() {
 
     // Delete batch of gl resources
     renderState.flushResourceDeletion();
-
+    
     // Invalidate render states for new frame
     if (!impl->cacheGlState) {
         renderState.invalidateStates();

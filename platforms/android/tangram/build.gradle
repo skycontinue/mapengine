@@ -5,7 +5,6 @@ version = '0.17.2-SNAPSHOT'
 
 android {
   compileSdkVersion 30
-
   // Specific ABI targets can be chosen with the 'abis' property as a comma-separated list of ABIs.
   // From the command line, add '-Ptangram.abis=armeabi-v7a,x86,...' to only build those ABIs.
   // When building from Android Studio, the ABI for the target device is injected and takes precedence.
@@ -19,6 +18,7 @@ android {
     targetSdkVersion 30
     consumerProguardFiles 'tangram-proguard-rules.txt'
     buildConfigField 'String', 'TAG', '"Tangram"'
+    buildConfigField 'String', 'NameSpace', '"MapEngine"'
     externalNativeBuild {
       cmake {
         targets 'tangram'
@@ -52,7 +52,6 @@ android {
         } else {
           abiFilters abi.split(',')
         }
-
       }
     }
   }
@@ -75,6 +74,7 @@ android {
       }
     }
   }
+  ndkVersion '21.4.7075529'
 }
 
 dependencies {

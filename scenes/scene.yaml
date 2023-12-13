@@ -18,13 +18,13 @@ scene:
 cameras:
     iso-camera:
         # Manhattan
-        position: [-74.00976419448854, 40.70532700869127, 16]
+        position: [116.404556, 39.91095, 16]
         type: isometric
         axis: [0, 1]
         active: false
     perspective-camera:
         # Manhattan
-        position: [-74.00976419448854, 40.70532700869127, 16]
+        position: [116.404556, 39.91095, 16]
         type: perspective
         fov: 45
         max_tilt: [[2, 0], [16, 90]]
@@ -629,7 +629,7 @@ layers:
             draw:
                 lines:
                     visible: true
-                    color: [0.824, 0.651, 0.329, 1.00]
+                    color: [0.0, 0.0, 1.0, 1.00]
 
         region:
             filter: { kind: [region, macroregion] }

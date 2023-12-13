@@ -1,4 +1,5 @@
-all: android osx ios
+
+all: android-demo
 
 .PHONY: clean
 .PHONY: clean-android
@@ -49,6 +50,7 @@ BENCH_BUILD_DIR = build/bench
 TIZEN_ARM_BUILD_DIR = build/tizen-arm
 TIZEN_X86_BUILD_DIR = build/tizen-x86
 
+#检查系统上是否安装了xcpretty,它是一个用于格式化xcodebuild输出的命令行工具。如果没有安装，将XCPRETTY变量设置为空字符串。如果已经安装，则将XCPRETTY变量设置为一个管道命令，用于将输出传递给xcpretty，然后退出前一个命令的原始退出状态（$${PIPESTATUS[0]}）
 ifeq (, $(shell which xcpretty))
 	XCPRETTY =
 else
@@ -129,6 +131,7 @@ clean: clean-android clean-osx clean-ios clean-rpi clean-tests clean-xcode clean
 	clean-tizen-arm clean-tizen-x86
 
 clean-android:
+	@echo "skyway clean-android"
 	rm -rf platforms/android/build
 	rm -rf platforms/android/tangram/build
 	rm -rf platforms/android/tangram/.externalNativeBuild
@@ -171,7 +174,7 @@ android-sdk:
 	@cd platforms/android/ && \
 	./gradlew tangram:assembleRelease
 
-android-demo:
+android-demo:clean-android
 	@cd platforms/android/ && \
 	./gradlew demo:assembleDebug
 

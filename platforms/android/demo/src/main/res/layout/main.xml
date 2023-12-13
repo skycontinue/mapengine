@@ -12,7 +12,9 @@
         android:imeOptions="actionGo"
         android:completionThreshold="1"
         android:inputType="textUri"
-        android:selectAllOnFocus="true"/>
+        android:selectAllOnFocus="true"
+        android:visibility="gone"
+        />
 
     <com.mapzen.tangram.MapView
         android:id="@+id/map"

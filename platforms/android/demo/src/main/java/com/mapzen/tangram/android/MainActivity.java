@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity implements MapController.Sce
 
     private static final String[] SCENE_PRESETS = {
             "asset:///scene.yaml",
-            "https://www.nextzen.org/carto/bubble-wrap-style/9/bubble-wrap-style.zip",
-            "https://www.nextzen.org/carto/refill-style/11/refill-style.zip",
-            "https://www.nextzen.org/carto/walkabout-style/7/walkabout-style.zip",
-            "https://www.nextzen.org/carto/tron-style/6/tron-style.zip",
-            "https://www.nextzen.org/carto/cinnabar-style/9/cinnabar-style.zip"
+//            "https://www.nextzen.org/carto/bubble-wrap-style/9/bubble-wrap-style.zip",
+//            "https://www.nextzen.org/carto/refill-style/11/refill-style.zip",
+//            "https://www.nextzen.org/carto/walkabout-style/7/walkabout-style.zip",
+//            "https://www.nextzen.org/carto/tron-style/6/tron-style.zip",
+//            "https://www.nextzen.org/carto/cinnabar-style/9/cinnabar-style.zip"
     };
 
     private ArrayList<SceneUpdate> sceneUpdates = new ArrayList<>();
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MapController.Sce
     List<LngLat> tappedPoints = new ArrayList<>();
 
     PresetSelectionTextView sceneSelector;
-
+    
     String pointStylingPath = "layers.touch.point.draw.icons";
     ArrayList<Marker> pointMarkers = new ArrayList<>();
 
@@ -113,10 +113,11 @@ public class MainActivity extends AppCompatActivity implements MapController.Sce
             return;
         }
         map = mapController;
-        String sceneUrl = sceneSelector.getCurrentString();
+        String sceneUrl = "asset:///scene.yaml";
+//        String sceneUrl = sceneSelector.getCurrentString();
         map.setSceneLoadListener(this);
 
-        LngLat startPoint = new LngLat(-74.00976419448854, 40.70532700869127);
+        LngLat startPoint = new LngLat(116.404556,39.91095);
         map.updateCameraPosition(CameraUpdateFactory.newLngLatZoom(startPoint, 16));
         Log.d("Tangram", "START SCENE LOAD");
         map.loadSceneFileAsync(sceneUrl, sceneUpdates);

@@ -200,7 +200,7 @@ void Style::setupSceneShaderUniforms(RenderState& rs, UniformBlock& _uniformBloc
 
 void Style::setupShaderUniforms(RenderState& rs, ShaderProgram& _program, const View& _view,
                                 UniformBlock& _uniforms) {
-
+                                    
     // Reset the currently used texture unit to 0
     rs.resetTextureUnit();
 
@@ -329,7 +329,7 @@ void Style::drawSelectionFrame(RenderState& _rs, const Marker& _marker) {
     }
 
     auto* mesh = _marker.mesh();
-
+    
     if (!mesh) { return; }
 
     m_selectionProgram->setUniformMatrix4f(_rs, m_selectionUniforms.uModel, _marker.modelMatrix());
@@ -371,7 +371,7 @@ void Style::drawSelectionFrame(Tangram::RenderState& rs, const Tangram::Tile &_t
 bool Style::draw(RenderState& rs, const View& _view,
                  const std::vector<std::shared_ptr<Tile>>& _tiles,
                  const std::vector<std::unique_ptr<Marker>>& _markers) {
-
+    LOGD("skyway draw Feature _title size = %d _markers size = %d",_tiles.size(), _markers.size());
     auto tileIt = std::find_if(std::begin(_tiles), std::end(_tiles),
                                [this](const auto& t){ return bool(t->getMesh(*this)); });
 
@@ -424,7 +424,7 @@ bool Style::draw(RenderState& rs, const View& _view,
 
 
 bool Style::draw(RenderState& rs, const Tile& _tile) {
-
+    
     auto& styleMesh = _tile.getMesh(*this);
 
     if (!styleMesh) { return false; }
@@ -438,7 +438,7 @@ bool Style::draw(RenderState& rs, const Tile& _tile) {
         UniformArray3f rasterOffsetsUniform;
 
         for (auto& raster : _tile.rasters()) {
-
+            
             auto& texture = raster.texture;
             auto texUnit = rs.nextAvailableTextureUnit();
             texture->bind(rs, texUnit);
@@ -472,7 +472,7 @@ bool Style::draw(RenderState& rs, const Tile& _tile) {
                                  _tile.getOrigin().y,
                                  tileID.s,
                                  tileID.z);
-
+    
     if (!styleMesh->draw(rs, *m_shaderProgram)) {
         LOGN("Mesh built by style %s cannot be drawn", m_name.c_str());
         styleMeshDrawn = false;
