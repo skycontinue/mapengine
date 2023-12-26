@@ -72,7 +72,7 @@ std::string NetworkDataSource::buildUrlForTile(const TileID& tile, const std::st
 }
 
 bool NetworkDataSource::loadTileData(std::shared_ptr<TileTask> task, TileTaskCb callback) {
-
+    LOGD("skyway loadTileData");
     if (task->rawSource != this->level) {
         LOGE("NetworkDataSource must be last!");
         return false;

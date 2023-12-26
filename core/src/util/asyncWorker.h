@@ -59,7 +59,7 @@ private:
             task();
         }
     }
-
+    
     std::thread thread;
     std::atomic<bool> m_running {true};
     std::atomic<bool> m_waitForCompletion {false};

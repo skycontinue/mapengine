@@ -69,6 +69,7 @@ public class DefaultHttpHandler implements HttpHandler {
             cb.onFailure(new IOException("Failed to parse URL: " + url));
             return null;
         }
+        Log.d("skyway","DefaultHttpHandler url = "+ url);
         // Construct okhttp3.Callback which forwards response calls to HttpResponse.Callback
         final okhttp3.Callback callback = new okhttp3.Callback() {
             @Override

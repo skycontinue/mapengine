@@ -108,7 +108,7 @@ public:
     auto& tileSources() const { return m_tileSources; }
     auto& featureSelection() const { return m_featureSelection; }
     auto& fontContext() const { return m_fontContext; }
-
+    
     const auto& config() const { return m_config; }
     const auto& functions() const { return m_jsFunctions; }
     const auto& layers() const { return m_layers; }
@@ -139,7 +139,7 @@ public:
                          std::vector<SelectionQuery>& _selectionQueries);
 
     Color backgroundColor(int _zoom) const;
-
+    
     /// Used for FrameInfo debug
     TileManager* tileManager() const { return m_tileManager.get(); }
 

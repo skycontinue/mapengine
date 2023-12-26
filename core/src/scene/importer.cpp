@@ -30,7 +30,7 @@ Node Importer::loadSceneData(Platform& _platform, const Url& _sceneUrl, const st
         // Load scene from yaml file.
         m_sceneQueue.push_back(_sceneUrl);
     }
-
+    
     std::atomic_uint activeDownloads(0);
     std::condition_variable condition;
 
@@ -44,7 +44,7 @@ Node Importer::loadSceneData(Platform& _platform, const Url& _sceneUrl, const st
                 }
                 condition.wait(lock);
             }
-
+            
             if (m_sceneQueue.empty() || m_canceled) {
                 continue;
             }
@@ -62,19 +62,19 @@ Node Importer::loadSceneData(Platform& _platform, const Url& _sceneUrl, const st
                 LOGE("Unable to retrieve '%s': %s", nextUrlToImport.string().c_str(),
                      response.error);
             } else {
+                LOGD("skyway nextUrlToImport = %s",nextUrlToImport.data().c_str());
                 addSceneData(nextUrlToImport, std::move(response.content));
             }
             activeDownloads--;
             condition.notify_one();
         };
-
+        
         activeDownloads++;
 
         if (nextUrlToImport.scheme() == "zip") {
             readFromZip(nextUrlToImport, cb);
         } else {
             auto handle = _platform.startUrlRequest(nextUrlToImport, cb);
-
             std::unique_lock<std::mutex> lock(m_sceneMutex);
             m_urlRequests.push_back(handle);
         }
@@ -287,7 +287,6 @@ void Importer::mergeMapFields(Node& target, const Node& import) {
 
     } else {
         for (const auto& entry : import) {
-
             const auto& key = entry.first.Scalar();
             const auto& source = entry.second;
             auto dest = target[key];

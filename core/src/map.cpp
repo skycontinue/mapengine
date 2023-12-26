@@ -59,7 +59,7 @@ public:
         platform(_platform),
         inputHandler(view),
         scene(std::make_unique<Scene>(_platform)) {}
-
+    
     void setPixelScale(float _pixelsPerPoint);
     SceneID loadScene(SceneOptions&& _sceneOptions);
     SceneID loadSceneAsync(SceneOptions&& _sceneOptions);
@@ -158,7 +158,7 @@ SceneID Map::Impl::loadSceneAsync(SceneOptions&& _sceneOptions) {
     std::shared_ptr<Scene> oldScene = std::move(scene);
 
     oldScene->cancelTasks();
-
+    
     // Add callback for tile prefetching
     auto prefetchCallback = [&](Scene* _scene) {
         jobQueue.add([&, _scene]() {
@@ -168,7 +168,7 @@ SceneID Map::Impl::loadSceneAsync(SceneOptions&& _sceneOptions) {
             }});
         platform.requestRender();
     };
-
+    
     scene = std::make_unique<Scene>(platform, std::move(_sceneOptions), prefetchCallback);
 
     // This async task gets a raw pointer to the new scene and the following task takes ownership of the shared_ptr to
@@ -270,7 +270,7 @@ void Map::render() {
 
     // Delete batch of gl resources
     renderState.flushResourceDeletion();
-    
+
     // Invalidate render states for new frame
     if (!impl->cacheGlState) {
         renderState.invalidateStates();
@@ -301,7 +301,6 @@ void Map::render() {
         scene.renderSelection(renderState, view,
                               *impl->selectionBuffer,
                               impl->selectionQueries);
-
         impl->selectionQueries.clear();
     }
 

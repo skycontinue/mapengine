@@ -57,7 +57,7 @@ PolygonStyle::PolygonStyle(std::string _name, Blending _blendMode, GLenum _drawM
 }
 
 void PolygonStyle::constructVertexLayout() {
-
+    
     if (m_texCoordsGeneration) {
         m_vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
             {"a_position", 4, GL_SHORT, false, 0},

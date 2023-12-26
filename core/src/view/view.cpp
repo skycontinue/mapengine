@@ -262,9 +262,7 @@ void View::roll(float _droll) {
 }
 
 void View::pitch(float _dpitch) {
-
     setPitch(m_pitch + _dpitch);
-
 }
 
 LngLat View::getCenterCoordinates() const {
@@ -551,33 +549,41 @@ glm::dvec2 View::getRelativeMeters(glm::dvec2 projectedMeters) const {
     return {dx, dy};
 }
 
+/**
+ * 经纬度坐标转换为瓦片坐标的推导过程  经纬度-> 米 -> 像素坐标 -> 瓦片坐标
+ * @param _tileCb
+ */
 void View::getVisibleTiles(const std::function<void(TileID)>& _tileCb) const {
 
     int zoom = getIntegerZoom();
+    // 在某一瓦片层级下，瓦片坐标的x 轴和 y轴个有 2^zoom 个瓦片
     int maxTileIndex = 1 << zoom;
-
+    LOGD("getVisibleTiles zoom = %d maxTileIndex = %d", zoom, maxTileIndex);
     // Bounds of view trapezoid in world space (i.e. view frustum projected onto z = 0 plane)
     glm::dvec2 viewBL = { 0.f,       m_vpHeight }; // bottom left
     glm::dvec2 viewBR = { m_vpWidth, m_vpHeight }; // bottom right
     glm::dvec2 viewTR = { m_vpWidth, 0.f        }; // top right
     glm::dvec2 viewTL = { 0.f,       0.f        }; // top left
-
+    LOGD("getVisibleTiles 屏幕坐标 m_vpHeight = %d m_vpHeight = %d", m_vpHeight, m_vpHeight);
+    // 屏幕坐标转世界坐标
     double t0 = screenToGroundPlaneInternal(viewBL.x, viewBL.y);
     double t1 = screenToGroundPlaneInternal(viewBR.x, viewBR.y);
     double t2 = screenToGroundPlaneInternal(viewTR.x, viewTR.y);
     double t3 = screenToGroundPlaneInternal(viewTL.x, viewTL.y);
-
+    LOGD("getVisibleTiles 世界坐标 x = %d y = %d", viewBR.x, viewBR.y);
     // if all of our raycasts have a negative intersection distance, we have no area to cover
     if (t0 < .0 && t1 < 0. && t2 < 0. && t3 < 0.) {
         return;
     }
 
     // Transformation from world space to tile space
+    // 半周长
     double hc = MapProjection::EARTH_HALF_CIRCUMFERENCE_METERS;
+    // ? / 周长
     double invTileSize = double(maxTileIndex) / MapProjection::EARTH_CIRCUMFERENCE_METERS;
     glm::dvec2 tileSpaceOrigin(-hc, hc);
     glm::dvec2 tileSpaceAxes(invTileSize, -invTileSize);
-
+    LOGD("getVisibleTiles 中心点墨卡托 x = %f y = %f", m_pos.x, m_pos.y);
     // Bounds of view trapezoid in tile space
     glm::dvec2 a = (glm::dvec2(viewBL.x + m_pos.x, viewBL.y + m_pos.y) - tileSpaceOrigin) * tileSpaceAxes;
     glm::dvec2 b = (glm::dvec2(viewBR.x + m_pos.x, viewBR.y + m_pos.y) - tileSpaceOrigin) * tileSpaceAxes;
@@ -648,7 +654,6 @@ void View::getVisibleTiles(const std::function<void(TileID)>& _tileCb) const {
 
         if (tile != opt.last) {
             opt.last = tile;
-
             _tileCb(TileID(tile.x, tile.y, tile.z, tile.z));
         }
     };

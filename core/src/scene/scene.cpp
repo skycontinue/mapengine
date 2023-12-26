@@ -38,7 +38,7 @@ Scene::Scene(Platform& _platform, SceneOptions&& _options, std::function<void(Sc
     m_platform(_platform),
     m_options(std::move(_options)),
     m_tilePrefetchCallback(_prefetchCallback) {
-
+    
     m_tileWorker = std::make_unique<TileWorker>(_platform, m_options.numTileWorkers);
     m_tileManager = std::make_unique<TileManager>(_platform, *m_tileWorker);
     m_markerManager = std::make_unique<MarkerManager>(*this);
@@ -67,7 +67,7 @@ void Scene::cancelTasks() {
             m_importer->cancelLoading(m_platform);
         }
     }
-
+    
     if (state == State::pending_resources) {
         /// NB: Called from main thread - notify async loader thread.
         m_taskCondition.notify_one();
@@ -85,7 +85,7 @@ bool Scene::load() {
     LOGTOInit();
     LOGTO(">>>>>> loadScene >>>>>>");
 
-    auto isCanceled = [&](Scene::State test){
+    auto isCanceled = [&](Scene::State test) -> bool {
         if (m_state == test) { return false; }
         LOG("Scene got Canceled: %d %d", m_state, test);
         m_errors.emplace_back(SceneError{{}, Error::no_valid_scene});
@@ -93,7 +93,7 @@ bool Scene::load() {
     };
 
     if (isCanceled(State::initial)) { return false; }
-
+    
     m_state = State::loading;
 
     /// Wait until all scene-yamls are available and merged.
@@ -532,7 +532,7 @@ Scene::UpdateState Scene::update(const View& _view, float _dt) {
 
 void Scene::renderBeginFrame(RenderState& _rs) {
     _rs.setFrameTime(m_time);
-
+    // point style & text style
     for (const auto& style : m_styles) {
         style->onBeginFrame(_rs);
     }
@@ -541,14 +541,16 @@ void Scene::renderBeginFrame(RenderState& _rs) {
 bool Scene::render(RenderState& _rs, View& _view) {
 
     bool drawnAnimatedStyle = false;
+    LOGD("skyway render style begin");
     for (const auto& style : m_styles) {
-
+        LOGD("skyway render style - name = %s type = %s", style->getName().c_str(), style->getTypeName().c_str());
         bool styleDrawn = style->draw(_rs, _view,
                                       m_tileManager->getVisibleTiles(),
                                       m_markerManager->markers());
 
         drawnAnimatedStyle |= (styleDrawn && style->isAnimated());
     }
+    LOGD("skyway render style finish");
     return drawnAnimatedStyle;
 }
 

@@ -219,7 +219,7 @@ bool AndroidPlatform::startUrlRequestImpl(const Url& url, const UrlRequestHandle
     // We can use UrlRequestHandle to cancel requests. MapController handles the
     // mapping between UrlRequestHandle and request object
     id = request;
-
+    
     m_jniWorker.enqueue([=](JNIEnv *jniEnv) {
         jlong jRequestHandle = static_cast<jlong>(request);
 

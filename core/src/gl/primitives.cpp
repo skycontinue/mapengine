@@ -36,6 +36,7 @@ void init() {
 
     // lazy init
     if (!s_initialized) {
+
         s_shader = std::make_unique<ShaderProgram>();
 
         s_shader->setShaderSource(debugPrimitive_vs, debugPrimitive_fs);
@@ -43,7 +44,6 @@ void init() {
         s_layout = std::unique_ptr<VertexLayout>(new VertexLayout({
             {"a_position", 2, GL_FLOAT, false, 0},
         }));
-
 
         s_textureShader = std::make_unique<ShaderProgram>();
 

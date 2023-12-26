@@ -214,6 +214,8 @@ public:
 
     StyleType type() { return m_type; }
 
+    std::string getTypeName() ;
+
     static bool compare(std::unique_ptr<Style>& a, std::unique_ptr<Style>& b) {
 
         const auto& modeA = a->blendMode();

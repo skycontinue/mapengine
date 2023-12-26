@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements MapController.Sce
         }
         map = mapController;
         String sceneUrl = "asset:///scene.yaml";
+//        String sceneUrl = "asset:///raster-terrain.yaml";
 //        String sceneUrl = sceneSelector.getCurrentString();
         map.setSceneLoadListener(this);
 

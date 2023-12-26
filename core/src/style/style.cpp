@@ -530,6 +530,19 @@ void Style::applyDefaultDrawRules(DrawRule& _rule) const {
     }
 }
 
+std::string Style::getTypeName() {
+    switch(m_type) {
+        case StyleType::none: return "none";
+        case StyleType::debug: return "debug";
+        case StyleType::point: return "point";
+        case StyleType::polygon: return "polygon";
+        case StyleType::polyline: return "polyline";
+        case StyleType::raster: return "raster";
+        case StyleType::text: return "text";
+        default: return "";
+    }
+}
+
 bool StyleBuilder::checkRule(const DrawRule& _rule) const {
 
     uint32_t checkColor;
